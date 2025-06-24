@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia Interativo de Ponta Grossa | Boas-vindas à Família Militar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Warm Neutral (Background: #FDFBF7, Text: #333333, Primary Accent: #5A6D57, Secondary Accents: #D4B483, #7E909A) -->
+    <!-- Application Structure Plan: A single-page, vertical-scrolling application with a sticky top navigation bar. This structure was chosen for its intuitive, linear user flow, mirroring how a newcomer might seek information: starting with a general welcome, then drilling down into essential needs like housing, education, and jobs, followed by lifestyle aspects like leisure and health. Key interactions include tab/button-based content reveals for neighborhoods and leisure activities, and data visualizations (bar/donut charts) to make quantitative data more digestible than static tables. This design prioritizes ease of access and quick comprehension for families planning a move. -->
+    <!-- Visualization & Content Choices: 1. Distances Table -> Bar Chart (Goal: Compare; Viz: Chart.js Bar; Interaction: Hover tooltips; Justification: Faster visual comparison of travel times). 2. Rent Costs Table -> Bar Chart (Goal: Compare; Viz: Chart.js Bar; Interaction: Hover tooltips; Justification: Clear visual of price ranges per property type). 3. Neighborhoods List -> Interactive Cards (Goal: Organize; Viz: HTML/JS Content Toggle; Interaction: Click to show/hide; Justification: Reduces clutter, encourages exploration). 4. Economic PIB % -> Donut Chart (Goal: Inform; Viz: Chart.js Donut; Interaction: Hover tooltips; Justification: Instantly shows economic composition). 5. Safety Data -> Stat Card with % Change (Goal: Change; Viz: HTML/CSS; Interaction: None; Justification: Highlights the positive trend more dramatically than text). All charts are rendered on Canvas via Chart.js. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #FDFBF7;
+            color: #333333;
+        }
+        .nav-active {
+            color: #D4B483;
+            font-weight: 700;
+        }
+        .bairro-btn-active {
+            background-color: #5A6D57 !important;
+            color: #FFFFFF !important;
+            border-color: #5A6D57 !important;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 350px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+            }
+        }
+        .section-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        .section-fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <header class="bg-[#5A6D57] text-white p-4 text-center shadow-md">
+        <h1 class="text-2xl md:text-3xl font-bold">Guia Interativo de Ponta Grossa</h1>
+        <p class="text-md">Boas-vindas à Família Militar do 3º RCC</p>
+    </header>
+
+    <nav id="main-nav" class="sticky top-0 bg-[#FDFBF7]/90 backdrop-blur-sm z-50 shadow-md">
+        <div class="container mx-auto px-4">
+            <div class="flex justify-center items-center space-x-2 md:space-x-8 overflow-x-auto py-3 text-sm md:text-base">
+                <a href="#welcome" class="nav-link whitespace-nowrap px-2 py-1 rounded-md transition-colors duration-300">Boas-Vindas</a>
+                <a href="#moradia" class="nav-link whitespace-nowrap px-2 py-1 rounded-md transition-colors duration-300">Moradia</a>
+                <a href="#educacao" class="nav-link whitespace-nowrap px-2 py-1 rounded-md transition-colors duration-300">Educação</a>
+                <a href="#vida" class="nav-link whitespace-nowrap px-2 py-1 rounded-md transition-colors duration-300">Custo & Trabalho</a>
+                <a href="#saude" class="nav-link whitespace-nowrap px-2 py-1 rounded-md transition-colors duration-300">Saúde & Segurança</a>
+                <a href="#lazer" class="nav-link whitespace-nowrap px-2 py-1 rounded-md transition-colors duration-300">Lazer & Cultura</a>
+                <a href="#distancias" class="nav-link whitespace-nowrap px-2 py-1 rounded-md transition-colors duration-300">Localização</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto p-4 md:p-8">
+
+        <section id="welcome" class="text-center min-h-[60vh] flex flex-col justify-center items-center section-fade-in">
+            <h2 class="text-4xl md:text-5xl font-bold text-[#5A6D57] mb-4">Princesa dos Campos, sua nova casa.</h2>
+            <p class="max-w-3xl mx-auto text-lg mb-8">Bem-vindos a Ponta Grossa! Uma cidade de contrastes vibrantes, onde um pujante polo industrial convive em harmonia com paisagens naturais de beleza rara. Este guia foi criado para apresentar as oportunidades, o bem-estar e a qualidade de vida que esperam por vocês nesta nova jornada.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mb-8">
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-4xl font-bold text-[#D4B483]">36ª</h3>
+                    <p class="text-gray-600 mt-2">Melhor cidade do Brasil em Qualidade de Vida (entre as 100 maiores)</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-4xl font-bold text-[#D4B483]">39ª</h3>
+                    <p class="text-gray-600 mt-2">Em Educação no ranking nacional, refletindo um sistema de ensino forte e completo.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-4xl font-bold text-[#D4B483]">Top 15</h3>
+                    <p class="text-gray-600 mt-2">Em Saneamento Básico, garantindo mais saúde e bem-estar para sua família.</p>
+                </div>
+            </div>
+             <div class="bg-green-50 p-6 rounded-xl shadow-md w-full max-w-5xl mt-8 border border-green-200">
+                <h3 class="text-2xl font-bold text-[#5A6D57] mb-3">Seu novo Regimento: 3º RCC</h3>
+                <p class="mb-2">O <strong>3º Regimento de Carros de Combate</strong> está localizado na Rua General Aldo Bonde, 333, no bairro Contorno.</p>
+                <p class="text-sm"> <span class="font-semibold">Ônibus Próximos:</span> 047, 056, 064, 174, 151. Essas linhas conectam o regimento aos principais terminais da cidade, facilitando o deslocamento diário.</p>
+            </div>
+        </section>
+
+        <section id="moradia" class="py-16 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#5A6D57] mb-12">🏡 Encontre seu Lar em Ponta Grossa</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12">A cidade oferece um mercado imobiliário diversificado e acessível, com opções para todos os perfis, desde apartamentos modernos no centro a casas espaçosas em bairros tranquilos. Explore as principais regiões para encontrar o lugar perfeito para sua família.</p>
+            <div class="flex flex-wrap justify-center gap-2 md:gap-4 mb-8">
+                <button class="bairro-btn bairro-btn-active px-4 py-2 text-sm md:text-base border-2 border-gray-300 rounded-full transition-all duration-300" data-bairro="jardim_carvalho">Jardim Carvalho</button>
+                <button class="bairro-btn px-4 py-2 text-sm md:text-base border-2 border-gray-300 rounded-full transition-all duration-300" data-bairro="oficinas">Oficinas</button>
+                <button class="bairro-btn px-4 py-2 text-sm md:text-base border-2 border-gray-300 rounded-full transition-all duration-300" data-bairro="uvaranas">Uvaranas</button>
+                <button class="bairro-btn px-4 py-2 text-sm md:text-base border-2 border-gray-300 rounded-full transition-all duration-300" data-bairro="vila_estrela">Vila Estrela / Órfãs</button>
+                <button class="bairro-btn px-4 py-2 text-sm md:text-base border-2 border-gray-300 rounded-full transition-all duration-300" data-bairro="centro">Centro</button>
+            </div>
+            <div id="bairro-info" class="bg-white p-8 rounded-xl shadow-lg min-h-[200px] max-w-3xl mx-auto transition-opacity duration-500">
+            </div>
+
+            <h3 class="text-2xl font-bold text-center text-[#5A6D57] mt-16 mb-6">Custo Médio de Aluguel</h3>
+            <div class="chart-container">
+                <canvas id="rentChart"></canvas>
+            </div>
+        </section>
+
+        <section id="educacao" class="py-16 bg-green-50 -mx-4 md:-mx-8 px-4 md:px-8 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#5A6D57] mb-12">🎓 Educação de Excelência para Toda a Família</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12">Ponta Grossa é um polo educacional completo, com ensino de alta qualidade desde a creche até a pós-graduação. Aqui, seus filhos têm acesso a um caminho educacional estável e de excelência, com opções públicas e privadas de grande renome.</p>
+            <div class="grid md:grid-cols-1 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-200">
+                    <h3 class="font-bold text-xl text-[#5A6D57] mb-3">Ensino Superior Gratuito</h3>
+                    <p class="text-left"><strong class="text-[#7E909A]">UEPG:</strong> Universidade Estadual com mais de 35 cursos, incluindo Medicina e Direito.</p>
+                    <p class="mt-2 text-left"><strong class="text-[#7E909A]">UTFPR:</strong> Universidade Tecnológica Federal, referência nacional em Engenharias e Tecnologia.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-200">
+                    <h3 class="font-bold text-xl text-[#5A6D57] mb-3">Rede Pública Premiada</h3>
+                    <p>O ensino fundamental da cidade tem nota <strong class="text-2xl text-[#D4B483]">6,5</strong> no IDEB, superando a média nacional e garantindo uma base sólida e gratuita para as crianças.</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-lg text-center border border-gray-200">
+                    <h3 class="font-bold text-xl text-[#5A6D57] mb-3">Colégios Particulares de Ponta</h3>
+                    <p>Instituições com resultados expressivos no ENEM e infraestrutura completa.</p>
+                    <ul class="text-sm mt-2 text-gray-600">
+                        <li>Colégio Sepam</li>
+                        <li>Colégio Marista Pio XII</li>
+                        <li>Colégio Neo Master</li>
+                        <li>Colégio Lobo</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="vida" class="py-16 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#5A6D57] mb-12">💰 Custo de Vida e Oportunidades de Trabalho</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12">A cidade une uma economia forte e diversificada a um dos custos de vida mais acessíveis do Paraná. Isso significa mais poder de compra para a família e um ambiente repleto de oportunidades de trabalho para os cônjuges.</p>
+            <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-bold text-center text-[#5A6D57] mb-6">Economia Local</h3>
+                    <div class="chart-container h-64 max-h-64">
+                         <canvas id="economyChart"></canvas>
+                    </div>
+                    <p class="text-center mt-4 text-sm text-gray-600">Polo industrial com gigantes como Heineken, Ambev, Tetra Pak e Madero.</p>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 flex flex-col justify-center">
+                    <h3 class="text-2xl font-bold text-[#5A6D57] mb-4">Oportunidades para Cônjuges</h3>
+                    <p class="mb-4">A <strong>Agência do Trabalhador</strong> oferece centenas de vagas semanais, muitas sem exigência de experiência, facilitando a recolocação profissional.</p>
+                    <div class="bg-amber-50 border-l-4 border-amber-400 p-4 rounded">
+                        <h4 class="font-bold text-amber-800">Dona de Mim</h4>
+                        <p class="text-sm text-amber-700">Programa de capacitação gratuita que incentiva o empreendedorismo feminino, oferecendo ferramentas para gerar renda e autonomia.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="saude" class="py-16 bg-green-50 -mx-4 md:-mx-8 px-4 md:px-8 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#5A6D57] mb-12">✚ Saúde e Segurança</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12">Ponta Grossa possui uma rede de saúde completa e investe continuamente em segurança pública, com resultados que demonstram um ambiente cada vez mais seguro e bem cuidado para os moradores.</p>
+            <div class="grid md:grid-cols-2 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+                    <h3 class="text-2xl font-bold text-[#5A6D57] mb-4">Rede de Saúde Estruturada</h3>
+                    <ul class="space-y-3">
+                        <li><strong class="text-[#7E909A]">Hospitais de Referência:</strong> Santa Casa, Hospital São Camilo (Saúde Mental), Hospital Universitário (UEPG) e Hospital Unimed.</li>
+                        <li><strong class="text-[#7E909A]">Pronto Atendimento 24h:</strong> UPA Santana (Centro) e UPA Santa Paula (B. Santa Paula).</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-8 rounded-xl shadow-lg border border-gray-200 text-center">
+                    <h3 class="text-2xl font-bold text-[#5A6D57] mb-4">Segurança em Evolução</h3>
+                    <p class="mb-4">Investimentos em tecnologia e policiamento resultaram em melhorias significativas.</p>
+                    <div class="bg-green-100 p-4 rounded-lg">
+                        <p class="text-lg text-green-800">Redução de</p>
+                        <p class="text-5xl font-bold text-green-600">58,3%</p>
+                        <p class="text-lg text-green-800">nos índices de homicídios (1º tri de 2025 vs 2024).</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="lazer" class="py-16 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#5A6D57] mb-12">🌳 Lazer, Cultura e Turismo</h2>
+             <p class="text-center max-w-3xl mx-auto mb-12">A vida em Ponta Grossa vai muito além do trabalho. A cidade é o portal para os Campos Gerais, uma região de natureza exuberante, e oferece uma rica vida urbana, com parques, eventos culturais e atividades para todas as idades.</p>
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                    <div class="h-40 bg-[url('https://placehold.co/600x400/7E909A/FFFFFF?text=Natureza')] bg-cover bg-center"></div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl text-[#5A6D57] mb-2">Maravilhas Naturais</h3>
+                        <p class="text-sm">Explore o <span class="font-semibold">Parque de Vila Velha</span> com seus arenitos icônicos e o <span class="font-semibold">Buraco do Padre</span> com sua cachoeira espetacular. Aventura e paisagens incríveis a poucos minutos da cidade.</p>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                    <div class="h-40 bg-[url('https://placehold.co/600x400/D4B483/FFFFFF?text=Cultura')] bg-cover bg-center"></div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl text-[#5A6D57] mb-2">Vida Urbana e Cultura</h3>
+                        <p class="text-sm">Curta os parques da cidade, como o <span class="font-semibold">Parque Ambiental</span> e o <span class="font-semibold">Parque Linear</span>. Não perca a <span class="font-semibold">Münchenfest</span>, a maior festa da cidade, e aproveite os shoppings e a gastronomia local.</p>
+                    </div>
+                </div>
+                 <div class="bg-white rounded-xl shadow-lg overflow-hidden border border-gray-200">
+                    <div class="h-40 bg-[url('https://placehold.co/600x400/5A6D57/FFFFFF?text=Crian%C3%A7as')] bg-cover bg-center"></div>
+                    <div class="p-6">
+                        <h3 class="font-bold text-xl text-[#5A6D57] mb-2">Atividades para Jovens</h3>
+                        <p class="text-sm">A cidade oferece aulas gratuitas de esportes, diversas escolas de idiomas e cursos de tecnologia e programação, garantindo o desenvolvimento e a diversão de crianças e adolescentes.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="distancias" class="py-16 bg-green-50 -mx-4 md:-mx-8 px-4 md:px-8 section-fade-in">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#5A6D57] mb-12">🗺️ Localização Estratégica e Conectividade</h2>
+            <p class="text-center max-w-3xl mx-auto mb-12">Morar em Ponta Grossa significa estar no principal entroncamento rodoferroviário do Sul do Brasil. Essa posição privilegiada transforma longas viagens em passeios de fim de semana, conectando sua família a grandes capitais, ao litoral e a destinos internacionais.</p>
+            <div class="chart-container">
+                <canvas id="distanceChart"></canvas>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-[#5A6D57] text-white text-center p-8 mt-12">
+        <h3 class="text-2xl font-bold mb-3">Uma jornada de sucesso em Ponta Grossa</h3>
+        <p class="max-w-3xl mx-auto text-green-100">O 3º Regimento de Carros de Combate e a cidade de Ponta Grossa estão prontos para acolher cada nova família. Que este guia seja o primeiro passo para uma vida de crescimento, integração e felicidade na Princesa dos Campos. Sejam bem-vindos ao seu novo lar!</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const data = {
+                bairros: {
+                    jardim_carvalho: {
+                        titulo: "Jardim Carvalho",
+                        descricao: "Bairro residencial tranquilo, com excelente infraestrutura. Popular entre famílias e estudantes pela proximidade com a UTFPR e o Parque Monteiro Lobato. Possui grandes supermercados e fácil acesso à rodovia PR-151."
+                    },
+                    oficinas: {
+                        titulo: "Oficinas",
+                        descricao: "Bairro populoso e em constante crescimento, com forte comércio local. Sua localização é estratégica, próxima ao centro e ao Distrito Industrial, com acesso direto à BR-376 (caminho para Curitiba)."
+                    },
+                    uvaranas: {
+                        titulo: "Uvaranas",
+                        descricao: "O maior bairro da cidade, com atmosfera jovem e dinâmica por abrigar o campus principal da UEPG e o Hospital Universitário. Possui um terminal de ônibus próprio e vasto comércio."
+                    },
+                    vila_estrela: {
+                        titulo: "Vila Estrela & Órfãs",
+                        descricao: "Considerados bairros nobres, são conhecidos pelo charme, tranquilidade e ruas arborizadas. Combinam a calma de uma área residencial com a conveniência de estarem próximos ao centro."
+                    },
+                    centro: {
+                        titulo: "Centro",
+                        descricao: "Ideal para quem prioriza a praticidade. Concentra a maior parte do comércio, bancos, clínicas e serviços. É o principal nó do sistema de transporte público, conectando toda a cidade."
+                    }
+                },
+                aluguel: {
+                    labels: ['Apto 2Q (min)', 'Apto 2Q (max)', 'Apto 3Q (min)', 'Apto 3Q (max)', 'Casa 3Q (min)', 'Casa 3Q (max)'],
+                    valores: [1100, 1700, 1500, 2800, 1300, 3500]
+                },
+                economia: {
+                    labels: ['Serviços', 'Indústria', 'Agronegócio'],
+                    valores: [47.4, 40.2, 12.4]
+                },
+                distancias: {
+                    labels: ['Curitiba', 'Florianópolis', 'São Paulo', 'Foz do Iguaçu', 'Porto Alegre', 'Brasília'],
+                    tempos: [1.6, 5.1, 6.3, 7, 11, 15.2],
+                    kms: [115, 412, 526, 544, 709, 1273]
+                }
+            };
+
+            const bairroInfoContainer = document.getElementById('bairro-info');
+            const bairroButtons = document.querySelectorAll('.bairro-btn');
+
+            function updateBairroInfo(bairroKey) {
+                const bairro = data.bairros[bairroKey];
+                bairroInfoContainer.style.opacity = 0;
+                setTimeout(() => {
+                    bairroInfoContainer.innerHTML = `
+                        <h3 class="text-2xl font-bold text-[#5A6D57] mb-3">${bairro.titulo}</h3>
+                        <p>${bairro.descricao}</p>
+                    `;
+                    bairroInfoContainer.style.opacity = 1;
+                }, 300);
+
+                bairroButtons.forEach(btn => {
+                    btn.classList.remove('bairro-btn-active');
+                    if (btn.dataset.bairro === bairroKey) {
+                        btn.classList.add('bairro-btn-active');
+                    }
+                });
+            }
+
+            bairroButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    updateBairroInfo(button.dataset.bairro);
+                });
+            });
+
+            updateBairroInfo('jardim_carvalho');
+
+            const defaultChartOptions = {
+                maintainAspectRatio: false,
+                responsive: true,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: '#333333',
+                        titleFont: { size: 14, weight: 'bold' },
+                        bodyFont: { size: 12 },
+                        padding: 10,
+                        cornerRadius: 5,
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: {
+                            color: '#333333',
+                            font: { size: 12 }
+                        },
+                        grid: {
+                            display: false
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            color: '#333333',
+                            font: { size: 12 }
+                        },
+                        grid: {
+                            color: '#e0e0e0'
+                        }
+                    }
+                }
+            };
+
+            new Chart(document.getElementById('rentChart'), {
+                type: 'bar',
+                data: {
+                    labels: ['Apto 2Q', 'Apto 3Q', 'Casa 3Q'],
+                    datasets: [{
+                        label: 'Aluguel Mín. (R$)',
+                        data: [data.aluguel.valores[0], data.aluguel.valores[2], data.aluguel.valores[4]],
+                        backgroundColor: '#7E909A',
+                        borderRadius: 5,
+                    },
+                    {
+                        label: 'Aluguel Máx. (R$)',
+                        data: [data.aluguel.valores[1], data.aluguel.valores[3], data.aluguel.valores[5]],
+                        backgroundColor: '#D4B483',
+                        borderRadius: 5,
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                    plugins: { ...defaultChartOptions.plugins, legend: { display: true, position: 'top' } },
+                    scales: {
+                         ...defaultChartOptions.scales,
+                         y: { ...defaultChartOptions.scales.y, ticks: { ...defaultChartOptions.scales.y.ticks, callback: value => `R$ ${value}` } }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('economyChart'), {
+                type: 'doughnut',
+                data: {
+                    labels: data.economia.labels,
+                    datasets: [{
+                        label: 'PIB Local',
+                        data: data.economia.valores,
+                        backgroundColor: ['#5A6D57', '#7E909A', '#D4B483'],
+                        borderColor: '#FDFBF7',
+                        borderWidth: 4
+                    }]
+                },
+                options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                color: '#333333',
+                                font: { size: 12 },
+                                boxWidth: 20
+                            }
+                        },
+                        tooltip: {
+                            ...defaultChartOptions.plugins.tooltip,
+                            callbacks: {
+                                label: function(context) {
+                                    return `${context.label}: ${context.raw}%`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+
+            new Chart(document.getElementById('distanceChart'), {
+                type: 'bar',
+                data: {
+                    labels: data.distancias.labels,
+                    datasets: [{
+                        label: 'Tempo de Viagem (horas)',
+                        data: data.distancias.tempos,
+                        backgroundColor: '#5A6D57',
+                        borderColor: '#3e4d3c',
+                        borderWidth: 1,
+                        borderRadius: 5,
+                    }]
+                },
+                options: {
+                    ...defaultChartOptions,
+                    indexAxis: 'y',
+                    plugins: {
+                        ...defaultChartOptions.plugins,
+                        tooltip: {
+                           ...defaultChartOptions.plugins.tooltip,
+                           callbacks: {
+                                label: function(context) {
+                                    const index = context.dataIndex;
+                                    const tempo = data.distancias.tempos[index];
+                                    const km = data.distancias.kms[index];
+                                    return `Aprox. ${tempo} horas (${km} km)`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: { ...defaultChartOptions.scales.x, title: { display: true, text: 'Tempo de Viagem (horas)', color: '#333333'} },
+                        y: { ...defaultChartOptions.scales.y }
+                    }
+                }
+            });
+
+            const sections = document.querySelectorAll('.section-fade-in');
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        navLinks.forEach(link => {
+                            link.classList.remove('nav-active');
+                            if(link.getAttribute('href').substring(1) === entry.target.id) {
+                                link.classList.add('nav-active');
+                            }
+                        });
+                    }
+                });
+            }, { threshold: 0.2 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+        });
+    </script>
+</body>
+</html>
