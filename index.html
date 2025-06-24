@@ -82,7 +82,7 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mb-8">
                 <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
                     <h3 class="text-4xl font-bold text-[#D4B483]">36ª</h3>
-                    <p class="text-gray-600 mt-2">Melhor cidade do Brasil em Qualidade de Vida (entre as 100 maiores)</p>
+                    <p class="text-gray-600 mt-2">Melhor cidade do Brasil em Qualidade de Vida<br>(entre as 100 maiores)</p>
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
                     <h3 class="text-4xl font-bold text-[#D4B483]">39ª</h3>
@@ -90,7 +90,7 @@
                 </div>
                 <div class="bg-white p-6 rounded-xl shadow-lg border border-gray-200">
                     <h3 class="text-4xl font-bold text-[#D4B483]">Top 15</h3>
-                    <p class="text-gray-600 mt-2">Em Saneamento Básico, garantindo mais saúde e bem-estar para sua família.</p>
+                    <p class="text-gray-600 mt-2">Em Saneamento Básico, garantindo mais saúde e<br>bem-estar para sua família.</p>
                 </div>
             </div>
              <div class="bg-green-50 p-6 rounded-xl shadow-md w-full max-w-5xl mt-8 border border-green-200">
@@ -221,8 +221,37 @@
         <section id="distancias" class="py-16 bg-green-50 -mx-4 md:-mx-8 px-4 md:px-8 section-fade-in">
             <h2 class="text-3xl md:text-4xl font-bold text-center text-[#5A6D57] mb-12">🗺️ Localização Estratégica e Conectividade</h2>
             <p class="text-center max-w-3xl mx-auto mb-12">Morar em Ponta Grossa significa estar no principal entroncamento rodoferroviário do Sul do Brasil. Essa posição privilegiada transforma longas viagens em passeios de fim de semana, conectando sua família a grandes capitais, ao litoral e a destinos internacionais.</p>
-            <div class="chart-container">
-                <canvas id="distanceChart"></canvas>
+            <div class="max-w-5xl mx-auto grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 text-center">
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col justify-center">
+                    <h4 class="font-bold text-lg text-[#5A6D57]">Curitiba</h4>
+                    <p class="text-3xl font-bold text-[#D4B483] my-2">115 <span class="text-base font-normal">km</span></p>
+                    <p class="text-sm text-gray-600">Aprox. 1.6 horas</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col justify-center">
+                    <h4 class="font-bold text-lg text-[#5A6D57]">Florianópolis</h4>
+                    <p class="text-3xl font-bold text-[#D4B483] my-2">412 <span class="text-base font-normal">km</span></p>
+                    <p class="text-sm text-gray-600">Aprox. 5.1 horas</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col justify-center">
+                    <h4 class="font-bold text-lg text-[#5A6D57]">São Paulo</h4>
+                    <p class="text-3xl font-bold text-[#D4B483] my-2">526 <span class="text-base font-normal">km</span></p>
+                    <p class="text-sm text-gray-600">Aprox. 6.3 horas</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col justify-center">
+                    <h4 class="font-bold text-lg text-[#5A6D57]">Foz do Iguaçu</h4>
+                    <p class="text-3xl font-bold text-[#D4B483] my-2">544 <span class="text-base font-normal">km</span></p>
+                    <p class="text-sm text-gray-600">Aprox. 7 horas</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col justify-center">
+                    <h4 class="font-bold text-lg text-[#5A6D57]">Porto Alegre</h4>
+                    <p class="text-3xl font-bold text-[#D4B483] my-2">709 <span class="text-base font-normal">km</span></p>
+                    <p class="text-sm text-gray-600">Aprox. 11 horas</p>
+                </div>
+                <div class="bg-white p-4 rounded-xl shadow-md border border-gray-200 flex flex-col justify-center">
+                    <h4 class="font-bold text-lg text-[#5A6D57]">Brasília</h4>
+                    <p class="text-3xl font-bold text-[#D4B483] my-2">1273 <span class="text-base font-normal">km</span></p>
+                    <p class="text-sm text-gray-600">Aprox. 15.2 horas</p>
+                </div>
             </div>
         </section>
 
@@ -265,11 +294,6 @@
                 economia: {
                     labels: ['Serviços', 'Indústria', 'Agronegócio'],
                     valores: [47.4, 40.2, 12.4]
-                },
-                distancias: {
-                    labels: ['Curitiba', 'Florianópolis', 'São Paulo', 'Foz do Iguaçu', 'Porto Alegre', 'Brasília'],
-                    tempos: [1.6, 5.1, 6.3, 7, 11, 15.2],
-                    kms: [115, 412, 526, 544, 709, 1273]
                 }
             };
 
@@ -399,43 +423,6 @@
                                 }
                             }
                         }
-                    }
-                }
-            });
-
-            new Chart(document.getElementById('distanceChart'), {
-                type: 'bar',
-                data: {
-                    labels: data.distancias.labels,
-                    datasets: [{
-                        label: 'Tempo de Viagem (horas)',
-                        data: data.distancias.tempos,
-                        backgroundColor: '#5A6D57',
-                        borderColor: '#3e4d3c',
-                        borderWidth: 1,
-                        borderRadius: 5,
-                    }]
-                },
-                options: {
-                    ...defaultChartOptions,
-                    indexAxis: 'y',
-                    plugins: {
-                        ...defaultChartOptions.plugins,
-                        tooltip: {
-                           ...defaultChartOptions.plugins.tooltip,
-                           callbacks: {
-                                label: function(context) {
-                                    const index = context.dataIndex;
-                                    const tempo = data.distancias.tempos[index];
-                                    const km = data.distancias.kms[index];
-                                    return `Aprox. ${tempo} horas (${km} km)`;
-                                }
-                            }
-                        }
-                    },
-                    scales: {
-                        x: { ...defaultChartOptions.scales.x, title: { display: true, text: 'Tempo de Viagem (horas)', color: '#333333'} },
-                        y: { ...defaultChartOptions.scales.y }
                     }
                 }
             });
